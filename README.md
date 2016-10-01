@@ -1,14 +1,54 @@
-# Angular 2 Widgets Sample Application
+# Welcome to Comprehensive Angular 2!
+
+## Instructor
+
+Eric Greene - [http://t4d.io](http://t4d.io) - [LinkedIn](https://www.linkedin.com/in/ericwgreene)
+
+## Schedule
+
+Class:
+- Monday - Friday: 8:30am to 4:30pm
+
+Breaks:
+- Morning: 10:15am to 10:30am
+- Lunch: Noon to 1pm
+- Afternoon #2: 2:45pm to 3:00pm
+
+## Course Outline
+
+	TypeScript & JavaScript topics will be included as needed into the Angular 2 content
+
+- Day 1 - Introduction to Components, Pipes, Event Handling, Directives & Routing
+- Day 2 - Form Validation, Custom Validators, Custom Pipes, Service Injection
+- Day 3 - Http Service & REST Services, Observables/Promises, Web Sockets, Advanced Routing
+- Day 4 - Composing Components, Structural and Attribute Directives, Unit Testing
+- Day 5 - Project Day
+
+## Links
+
+### Instructor's Resources
+
+- [Accelebrate, Inc.](https://www.accelebrate.com/)
+- [Eric's Blog](http://t4d.io/)
+- [WintellectNOW](https://www.wintellectnow.com/Home/Instructor?instructorId=EricGreene) - Special Offer Code: GREENE-2016
+- [Microsoft Virtual Academy](https://mva.microsoft.com/search/SearchResults.aspx#!q=Eric%20Greene&lang=1033)
+- [JavaScript Blog Posts](https://www.accelebrate.com/blog/?s=Greene)
+
+### Other Resources
+
+- [Accelebrate's Blog](https://www.accelebrate.com/blog/)
+- [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS)
+- [JavaScript Air Podcast](http://javascriptair.podbean.com/)
 
 ## Overview
 
-This is a simple CRUD (create, read, update & delete) application demonstrating the essentials of Angular 2 including HTTP services, routing, forms, composing components and unit testing. The base project configuration is adapted from the [Angular 2 Webpack Starter project](https://angular.io/docs/ts/latest/guide/webpack.html).
+This project configuration is adapted from the [Angular 2 Webpack Starter project](https://angular.io/docs/ts/latest/guide/webpack.html).
 
 ## Application Setup
 
 Step 1. Install Node.js version 6 or higher. To install Node.js click [here](https://nodejs.org).
 
-Step 2. Download this repository from [here](https://github.com/training4developers/ng2-widgets-app/archive/master.zip). Extract the zip file to a working folder on your system.
+Step 2. Download this repository from [here](https://github.com/training4developers/angular2_10102016/archive/master.zip). Extract the zip file to a working folder on your system.
 
 Step 3. Open a terminal window, change to the folder where you extracted the zip file. You should see a **package.json** file in the folder.
 
