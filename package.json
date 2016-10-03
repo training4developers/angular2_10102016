@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "npm run typings",
     "typings": "typings install",
-    "start": "npm run clean && concurrently \"npm run webpack\" \"npm run web\" \"npm run rest\"",
+    "start": "npm run clean && npm run webpack-once && concurrently \"npm run webpack\" \"npm run web\" \"npm run rest\"",
     "clean": "rimraf dist",
     "web": "browser-sync start -c ./config/bs-config.js",
     "rest": "json-server --watch --port 3010 db.json",

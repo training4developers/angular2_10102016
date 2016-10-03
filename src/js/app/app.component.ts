@@ -11,6 +11,6 @@ declare var require: any;
 })
 export class AppComponent {
 
-  message: string = 'Hello World!!';
+  message: string = 'Hello World!';
 
 }
