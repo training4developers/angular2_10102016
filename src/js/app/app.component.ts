@@ -1,43 +1,33 @@
 import { Component } from '@angular/core';
+import { Colors } from './services/colors';
 
 @Component({
 	selector: 'my-app',
 	template: `<h1>{{header}}</h1>
 <ul>
-	<li *ngFor="let color of sortedColors;">{{color}}</li>
+	<li *ngFor="let color of sortedColors">{{color | uppercase}}</li>
 </ul>
 <div>
 	<label for="new-color">New Color</label>
 	<input type="text" id="new-color" name="newColor" [(ngModel)]="newColor">
-	<button type="button" (click)="addColor(newColor)">Add Color</button>
-</div>`
+	<button type="button" (click)="addColor()">Add Color</button>
+</div>`,
+	providers: [ Colors ]
 })
 export class AppComponent {
+
+	constructor(private colors: Colors) { }
 
 	header: string = 'My Colorful App!';
 	newColor: string = '';
 
-	colors: string[] = [
-		'red','blue','black','apricot',
-		'gold','green','white','saffron'
-	];
-
-	lastColors: string[] = [];
-	_sortedColors: string[] = [];
-
-	addColor(nc: string) {
-		this.colors = this.colors.concat(nc);
+	addColor() {
+		this.colors.insert(this.newColor);
 		this.newColor = '';
 	}
 
 	get sortedColors() : string[] {
-
-		if (this.lastColors != this.colors) {
-			console.log('sorting colors');
-			this._sortedColors = this.colors.concat().sort();
-			this.lastColors = this.colors;
-		}
-		return this._sortedColors;
+		return this.colors.getAll();
 	}
 
 }
