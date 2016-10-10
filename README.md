@@ -7,7 +7,7 @@ Eric Greene - [http://t4d.io](http://t4d.io) - [LinkedIn](https://www.linkedin.c
 ## Schedule
 
 Class:
-- Monday - Friday: 8:30am to 4:30pm
+- Monday - Friday: 8:30am to 4:30pm (end at 4pm on Friday)
 
 Breaks:
 - Morning: 10:15am to 10:30am
