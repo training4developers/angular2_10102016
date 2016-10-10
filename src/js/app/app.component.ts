@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
 
-import '../../css/styles.scss';
-
-declare var require: any;
-
 @Component({
-  selector: 'demo-app',
-  template: require('./app.component.html'),
-  styles: [require('./app.component.scss')]
+	selector: 'my-app',
+	template: `<h1>{{header}}</h1>`
 })
 export class AppComponent {
 
-  message: string = 'Hello World!';
+	header: string = 'My Colorful App!';
 
 }
