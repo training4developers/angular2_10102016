@@ -1,24 +1,17 @@
-<h1>{{header}}</h1>
-<label>Color Filter:</label>
-<input type="text" [(ngModel)]="colorFilter">
-<ul>
-	<li *ngFor="let color of sortedColors">{{color}}</li>
-</ul>
-<div>
-	<label for="new-color">New Color</label>
-	<input type="text" id="new-color" name="newColor" [(ngModel)]="newColor">
-	<button type="button" (click)="addColor()">Add Color</button>
-</div>
-<span [ngClass]="{ 'critical': showMe }">Some text</span>
-<input type="checkbox" [(ngModel)]="showMe"> <span [ngStyle]="{ 'font-weight': showMe ? 'bold' : 'normal' }">Show Me</span>
-<div *ngIf="showMe">
-	You can see me!
-</div>
-<div [ngSwitch]="favColor">
+<form novalidate>
+
 	<div>
-		<div *ngSwitchCase=" 'blue' ">My favorite color is blue.</div>
-		<div *ngSwitchCase=" 'red' ">My favorite color is red.</div>
-		<div *ngSwitchCase=" 'green' ">My favorite color is green.</div>
-		<div *ngSwitchDefault>My favorite color is hot pink.</div>
+		<label id="first-name">First Name: </label>
+		<input type="text"
+			id="first-name"
+			name="firstName"
+			[(ngModel)]="firstName"
+			required
+			#firstNameInput="ngModel"
+			>
+			<span *ngIf="!firstNameInput.valid">
+				First Name is a required field
+			</span>
 	</div>
-</div>
+
+</form>

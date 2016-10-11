@@ -1,11 +1,11 @@
-Review Service Code
-Filter
-ngIf, ngSwitch
+Review Service Code - X
+Filter - X
+ngIf, ngSwitch - X
 Forms
 Custom Validator
 Pipes
 Custom Pipes
-Component Template URL
-Component Styles
-WebPack Templates and Styles
+Component Template URL - X
+Component Styles - X
+WebPack Templates and Styles - X
 Services
