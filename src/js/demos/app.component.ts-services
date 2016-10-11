@@ -1,0 +1,94 @@
+import { Component, OnInit, OpaqueToken, Inject } from '@angular/core';
+
+interface R {
+	message: string;
+}
+
+const Y = new OpaqueToken("R");
+
+
+
+export class S {
+
+	constructor() {
+		console.log('new S');
+	}
+
+	message: string = 'use class';
+}
+
+
+export class T implements R {
+
+	constructor() {
+		console.log('new S');
+	}
+
+	message: string = 'use class';
+}
+
+// export const m = new S();
+// m.message = 'use value';
+
+export const factoryS = () => {
+	console.log('factory executed');
+	const g = new S();
+	g.message = 'use factory';
+	return g;
+}
+
+@Component({
+	selector: 'my-left',
+	template: `left`,
+	//providers: [{ provide: T, useExisting: S }]
+})
+export class LeftComponent {
+
+	constructor(private s: S) {
+		console.log('left');
+
+	}
+
+}
+
+@Component({
+	selector: 'my-right',
+	template: `right`,
+	providers: [{ provide: S, useClass: S }]
+})
+export class RightComponent {
+
+	constructor(private s: S) {
+		console.log('right');
+		
+	}
+
+}
+
+
+@Component({
+	selector: 'my-app',
+	template: `<div>{{message}}</div>
+	
+	<input type="text" [(ngModel)]="ssn" minlength="3">
+	
+	<my-left></my-left><my-right></my-right>`,
+	//providers: [{ provide: S, useClass: S }]
+	providers: [{ provide: Y, useClass: T }]
+})
+export class AppComponent implements OnInit {
+
+	message: string;
+
+	constructor(private s: S, @Inject(Y) private r: R) {
+		console.log('app component');
+
+	}
+
+	ngOnInit() {
+		this.message = this.s.message;
+
+		console.log(this.r.message);
+	}
+
+}

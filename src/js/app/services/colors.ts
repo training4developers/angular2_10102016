@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Colors {
 
-	private _colors: string[] = ['red','green','blue'];
+	private _colors: string[] = ['red','green','blue','black','yellow','brown'];
 	private _lastColors: string[] = [];
 	private _sortedColors: string[] = [];
 

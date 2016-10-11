@@ -1,1 +1,13 @@
 body {}
+
+input.ng-invalid {
+	border: 1px solid red;
+}
+
+.validation-message {
+	display: none;
+}
+
+.show.validation-message {
+	display: initial;
+}

@@ -1,0 +1,78 @@
+import { Component, Directive, forwardRef } from '@angular/core';
+import { FormControl, NG_VALIDATORS } from '@angular/forms';
+import { Colors } from './services/colors';
+
+import "../../css/styles.scss";
+
+const myRequiredValidator = (c: FormControl) => {
+
+	if (c.value == null || String(c.value).length === 0) {
+		console.log('my required invalid');
+		return { myRequired: { valid: false } };
+	}
+	console.log('my required valid');
+	return null;
+
+};
+
+// const validateMyRequiredFactory = () => myRequiredValidator;
+
+@Directive({
+	selector: '[myRequired][ngModel],[myRequired][formControl]',
+	providers: [{ provide: NG_VALIDATORS, useValue: myRequiredValidator, multi: true }]
+})
+export class MyRequiredValidator { }
+
+// @Directive({
+// 	selector: '[myRequired][ngModel],[myRequired][formControl]',
+// 	providers: [{ provide: NG_VALIDATORS, useExisting: forwardRef(() => MyRequiredValidator), multi: true }]
+// })
+// export class MyRequiredValidator {
+
+// 	validator: Function;
+
+// 	constructor() {
+// 		this.validator = validateMyRequiredFactory();
+// 	}
+
+// 	validate(c: FormControl) {
+// 		return this.validator(c);
+// 	}
+// }
+
+@Component({
+	selector: 'my-app',
+	template: `<h1>{{header}}</h1>
+<ul>
+	<li *ngFor="let color of sortedColors">{{color | uppercase}}</li>
+</ul>
+<div>
+	<label for="new-color">New Color</label>
+	<input type="text" id="new-color" name="newColor" [(ngModel)]="newColor" myRequired #newColorInput="ngModel">
+	<span [ngClass]="{'show': !showConsole(newColorInput).valid}" class="validation-message">Enter a color</span>
+	<button type="button" (click)="addColor()">Add Color</button>
+</div>`,
+	providers: [ Colors ]
+})
+export class AppComponent {
+
+	constructor(private colors: Colors) { }
+
+	header: string = 'My Colorful App!';
+	newColor: string = '';
+
+	addColor() {
+		this.colors.insert(this.newColor);
+		this.newColor = '';
+	}
+
+	showConsole(control) {
+		console.log(control);
+		return control;
+	}
+
+	get sortedColors() : string[] {
+		return this.colors.getAll();
+	}
+
+}

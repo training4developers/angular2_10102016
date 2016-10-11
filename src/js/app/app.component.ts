@@ -1,17 +1,12 @@
 import { Component } from '@angular/core';
 import { Colors } from './services/colors';
 
+import '../../css/styles.scss';
+
 @Component({
 	selector: 'my-app',
-	template: `<h1>{{header}}</h1>
-<ul>
-	<li *ngFor="let color of sortedColors">{{color | uppercase}}</li>
-</ul>
-<div>
-	<label for="new-color">New Color</label>
-	<input type="text" id="new-color" name="newColor" [(ngModel)]="newColor">
-	<button type="button" (click)="addColor()">Add Color</button>
-</div>`,
+	styles: [require('./app.component.scss')],
+	template: require('./app.component.html'),
 	providers: [ Colors ]
 })
 export class AppComponent {
@@ -20,14 +15,27 @@ export class AppComponent {
 
 	header: string = 'My Colorful App!';
 	newColor: string = '';
+	showMe: boolean = false;
+	colorFilter: string = '';
+	favColor: string = '';
 
 	addColor() {
 		this.colors.insert(this.newColor);
 		this.newColor = '';
+		this.colorFilterMap.clear();
 	}
 
+	colorFilterMap: Map<string, string[]> = new Map<string, string[]>();
+
 	get sortedColors() : string[] {
-		return this.colors.getAll();
+
+		if (!this.colorFilterMap.has(this.colorFilter)) {
+			console.log('applying color filter');
+			this.colorFilterMap.set(this.colorFilter,
+				this.colors.getAll().filter(color => color.startsWith(this.colorFilter)));
+		}
+
+		return this.colorFilterMap.get(this.colorFilter);
 	}
 
 }
