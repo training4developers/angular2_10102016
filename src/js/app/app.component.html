@@ -5,13 +5,53 @@
 		<input type="text"
 			id="first-name"
 			name="firstName"
-			[(ngModel)]="firstName"
-			required
+			(blur)="firstName = firstNameInput.value"
+			myRequired
+			[ngModel]="firstName"
 			#firstNameInput="ngModel"
 			>
-			<span *ngIf="!firstNameInput.valid">
+			<span *ngIf="!consoleShow(firstNameInput).valid">
 				First Name is a required field
 			</span>
+			<br>{{firstName}}
 	</div>
+
+	<div>
+		<label for='is-employed'>Is Employed:</label>
+		<input type="checkbox" id="is-employed"
+			name="isEmployed" [(ngModel)]="isEmployed">
+	</div>
+
+	<fieldset>
+		<legend>Select a Division</legend>
+		<div>
+			<input type="radio" id="division-finance" name="division"
+				value="finance" [(ngModel)]="division" required>
+			<label for='division-finance'>Finance</label>
+		</div>
+		<div>
+			<input type="radio" id="division-health" name="division"
+				value="health" [(ngModel)]="division">
+			<label for='division-health'>Health</label>
+		</div>
+	</fieldset>
+
+	<div>
+		<label>Comments:</label>
+		<textarea id="comments" name="comments"
+			[(ngModel)]="comments"></textarea>
+	</div>
+
+	<div>
+		<label>State of Residence:</label>
+		<select id="state-of-residence" name="stateOfResidence"
+			[(ngModel)]="stateOfResidence" size="3" multiple>
+			<option *ngFor="let state of states" [value]="state">
+				{{state}}
+			</option>
+		</select>
+	</div>
+
+	<button type="button" (click)="showData()">Send</button>
 
 </form>
