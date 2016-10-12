@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
 	header: string = "My Header";
 	colors: string[] = [];
 
-	constructor(p: Colors) {
+	constructor(private colorsSvc: Colors) {
 		//this.colors = colorsSvc.getAll();
 	}
 
