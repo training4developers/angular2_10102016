@@ -1,52 +1,57 @@
-import { Component, Directive } from '@angular/core';
-import { FormControl, NG_VALIDATORS } from '@angular/forms';
-import '../../css/styles.scss';
+import { Component, Input, Injectable, OnInit } from '@angular/core';
 
-const myRequiredValidator = (c: FormControl) => {
-
-	if (c.value == null || String(c.value).length === 0) {
-		// invalid
-		return {
-			myRequired: {
-				valid: false
-			}
-		};
+@Injectable()
+export class Colors {
+	getAll() {
+		return ['red','blue','green','yellow'];
 	}
+}
 
-	return null;
-};
+@Injectable()
+export class MyColors {
+	getAll() {
+		return ['purple','blue','green','yellow'];
+	}
+}
 
-@Directive({
-	selector: '[myRequired][ngModel]',
-	providers: [{
-			provide: NG_VALIDATORS, useValue: myRequiredValidator, multi: true
-	}]
+@Component({
+	selector: 'my-header',
+	template: `<header><h1>{{header}}</h1></header>`
 })
-export class MyRequiredDirective { }
+export class MyHeaderComponent {
+
+	@Input()
+	header: string;
+
+}
+
+@Component({
+	selector: 'my-list',
+	template: `<ul><li *ngFor="let item of items">{{item}}</li></ul>`
+})
+export class MyListComponent {
+
+	@Input()
+	items: string[];
+}
 
 @Component({
 	selector: 'my-app',
-	styles: [require('./app.component.scss')],
-	template: require('./app.component.html')
+	template: `<my-header [header]="header"></my-header><my-list [items]="colors"></my-list>`,
+	//providers: [{ provide: Colors, useClass: Colors }]
+	providers: [ Colors ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-	firstName: string = 'Initial Name';
-	isEmployed: boolean = false;
-	division: string = '';
-	comments: string = '';
-	stateOfResidence: string[] = ['MA','NY'];
+	header: string = "My Header";
+	colors: string[] = [];
 
-	states: string[] = ['MA','VA','WA','NY','NH'];
-
-	showData() {
-		console.log(this);
+	constructor(p: Colors) {
+		//this.colors = colorsSvc.getAll();
 	}
 
-	consoleShow(o: FormControl) {
-		//console.log(o);
-		return o;
+	ngOnInit() {
+		this.colors = this.colorsSvc.getAll();
 	}
-
 
 }
