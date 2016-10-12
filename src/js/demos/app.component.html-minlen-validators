@@ -1,0 +1,1 @@
+<contact-form header="Contact Form" (submit)="logContact($event)"></contact-form>

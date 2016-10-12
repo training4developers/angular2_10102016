@@ -5,36 +5,6 @@
     <title>Angular 2 With Webpack</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
-
-      'use strict';
-
-      var doIt = function() {
-        console.log(this);
-      };
-
-      doIt();
-
-      var o = {
-        id: 2,
-        doIt: doIt,
-        doSomething: function() {
-          console.log(this);
-        }
-      };
-
-      o.doIt();
-
-      console.log(doIt === o.doIt);
-
-      o.doIt.call({ id: 3});
-
-      o.doSomething();
-      o.doSomething.call({ id:4 });
-
-
-    </script>
-
   </head>
   <body>
     <my-app>Loading...</my-app>

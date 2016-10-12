@@ -1,4 +1,71 @@
-import { Component, Input, Injectable, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Injectable, OnInit, Directive,
+	Output, EventEmitter, Pipe, PipeTransform, forwardRef } from '@angular/core';
+import { FormControl, NG_VALIDATORS } from '@angular/forms';
+
+@Directive({
+	selector: '[minLen][ngModel]',
+	providers: [{
+		provide: NG_VALIDATORS,
+		useExisting: forwardRef(() => MinLenDirective),
+		multi: true
+	}]
+})
+export class MinLenDirective {
+
+	private _minLen: number;
+
+	@Input()
+	set minLen(value: any) {
+		const intValue = parseInt(value, 10);
+		this._minLen = intValue || 0;
+	}
+
+	validate(c: FormControl) {
+
+		console.log(this._minLen);
+
+		if (this._minLen > 0 && (c.value == null || String(c.value).length < this._minLen)) {
+			console.log('minLen invalid');
+			return { minlen: true };
+		}
+		console.log('minLen valid');
+		return null;
+	}
+}
+
+@Directive({
+	selector: '[minlen][ngModel]',
+	providers: [{
+		provide: NG_VALIDATORS,
+		useExisting: forwardRef(() => MinLenValidatorDirective),
+		multi: true
+	}]
+})
+export class MinLenValidatorDirective {
+
+	private _minLen: number;
+
+	@Input('minlen')
+	set minLen(value: any) {
+		const intValue = parseInt(value, 10);
+		this._minLen = intValue || 0;
+	}
+
+
+	validate(c: FormControl): any {
+
+		console.log('validator was executed');
+
+		if (String(c.value).length < this._minLen) {
+			return {
+				minlen: true
+			};
+		}
+
+		return null;
+	}
+
+}
 
 @Injectable()
 export class Colors {
@@ -39,7 +106,7 @@ export class MyListComponent {
 	template: `<form novalidate>
 		<div>
 			<label for="color">New Color:</label>
-			<input type="text" id="color" name="color" [(ngModel)]="color">
+			<input type="text" id="color" name="color" [(ngModel)]="color" [minlen]="minLen">
 		</div>
 		<button type="button" (click)="addColor()">Add Color</button>
 </form>`
@@ -47,6 +114,7 @@ export class MyListComponent {
 export class MyFormComponent {
 
 	color: string = '';
+	minLen: number = 3;
 
 	@Output()
 	newColor: EventEmitter<string> = new EventEmitter<string>();
@@ -63,7 +131,6 @@ export class MyFormComponent {
 	template: `<my-header [header]="header"></my-header>
 	<my-list [items]="colorList"></my-list>
 	<my-form (newColor)="newColorHandler($event)"></my-form>`,
-	//providers: [{ provide: Colors, useClass: Colors }]
 	providers: [ Colors ]
 })
 export class AppComponent implements OnInit {
