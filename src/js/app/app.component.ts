@@ -1,16 +1,15 @@
-import { Component, Input, Injectable, OnInit } from '@angular/core';
+import { Component, Input, Injectable, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Injectable()
 export class Colors {
-	getAll() {
-		return ['red','blue','green','yellow'];
-	}
-}
 
-@Injectable()
-export class MyColors {
+	private colors: string[] = ['red','blue','green','yellow'];
 	getAll() {
-		return ['purple','blue','green','yellow'];
+		return this.colors;
+	}
+
+	insert(newColor: string) {
+		this.colors.push(newColor);
 	}
 }
 
@@ -36,22 +35,53 @@ export class MyListComponent {
 }
 
 @Component({
+	selector: 'my-form',
+	template: `<form novalidate>
+		<div>
+			<label for="color">New Color:</label>
+			<input type="text" id="color" name="color" [(ngModel)]="color">
+		</div>
+		<button type="button" (click)="addColor()">Add Color</button>
+</form>`
+})
+export class MyFormComponent {
+
+	color: string = '';
+
+	@Output()
+	newColor: EventEmitter<string> = new EventEmitter<string>();
+
+	addColor() {
+		this.newColor.emit(this.color);
+	}
+
+}
+
+
+@Component({
 	selector: 'my-app',
-	template: `<my-header [header]="header"></my-header><my-list [items]="colors"></my-list>`,
+	template: `<my-header [header]="header"></my-header>
+	<my-list [items]="colorList"></my-list>
+	<my-form (newColor)="newColorHandler($event)"></my-form>`,
 	//providers: [{ provide: Colors, useClass: Colors }]
 	providers: [ Colors ]
 })
 export class AppComponent implements OnInit {
 
 	header: string = "My Header";
-	colors: string[] = [];
+	colorList: string[] = [];
 
 	constructor(private colorsSvc: Colors) {
 		//this.colors = colorsSvc.getAll();
 	}
 
+	newColorHandler(newColor: string) {
+		this.colorsSvc.insert(newColor);
+		this.colorList = this.colorsSvc.getAll();
+	}
+
 	ngOnInit() {
-		this.colors = this.colorsSvc.getAll();
+		this.colorList = this.colorsSvc.getAll();
 	}
 
 }
