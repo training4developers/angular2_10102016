@@ -1,83 +1,39 @@
-import { Component, Injectable, Inject, OpaqueToken } from '@angular/core';
-
-export interface MyService {
-	doSomething: Function;
-}
-
-const myServiceToken = new OpaqueToken('MyService');
+import { Component, Injectable, OnInit } from '@angular/core';
+import { Http, Response } from '@angular/http';
 
 @Injectable()
-export class Logger {
-	log(msg: string) {
-		console.log(msg);
+export class Products {
+
+	private readonly baseUrl: string = 'http://svc.treeloop.com/products';
+
+	constructor(private http: Http) {}
+
+	getAll() {
+		return this.http.get(this.baseUrl).toPromise();
 	}
 }
-
-@Injectable()
-export class FirstMyService implements MyService {
-
-	constructor(private logger: Logger) {
-	}
-
-	doSomething() {
-		this.logger.log('first my svc did it!');
-	}
-
-}
-
-@Injectable()
-export class SecondMyService implements MyService {
-
-	doSomething() {
-		console.log('second my svc did it!');
-	}
-
-}
-
-// const svc = {
-// 	doSomething: () => console.log('did it too!')
-// };
-
-const useCustomLogger: boolean = true;
-
-const configureMyService = (fn: Function) => {
-	return (logger: Logger): MyService => {
-		if (fn()) {
-			return new FirstMyService(logger);
-		} else {
-			return new SecondMyService();
-		}
-	};
-};
-
-
-
-@Component({
-	selector: 'child',
-	template: ``
-})
-export class ChildComponent {
-
-	constructor(@Inject(myServiceToken) private myService: MyService) {
-		this.myService.doSomething();
-	}
-
-}
-
 
 @Component({
 	selector: 'my-app',
-	template: `<child></child>`,
-	providers: [ {
-		provide: myServiceToken,
-		useFactory: configureMyService(() => useCustomLogger),
-		deps: [ Logger ]
-	}]
+	template: `<ul><li *ngFor="let product of productList">{{product.name}}</li></ul>`,
+	providers: [ Products ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-	constructor(@Inject(myServiceToken) private myService: MyService) {
-		this.myService.doSomething();
+	productList: any[];
+
+	constructor(private products: Products) {
+	}
+
+	ngOnInit() {
+
+		// fetch('http://svc.treeloop.com/products')
+		// 	.then(res => res.json())
+		// 	.then(results => console.dir(results));
+
+		this.products.getAll().then((res: Response) => {
+			this.productList = res.json();
+		});
 	}
 
 }

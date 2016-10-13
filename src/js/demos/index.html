@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="/">
+    <title>Angular 2 With Webpack</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>
+
+      var youngMan = new Promise(function youngLady(resolve, reject) {
+        setTimeout(function() {
+          resolve('Yes, you are the man of my dreams!');
+        },3000);
+      });
+
+      youngMan.then(results => {
+        console.log(results);
+        console.log('planning a bachelor party');
+
+        return new Promise(function youngLady(resolve, reject) {
+          setTimeout(function() {
+            resolve('bachelor party planned...');
+          },3000);
+        });
+
+      }).then(results => {
+
+        console.log(results);
+        console.log('select a location');
+        return new Promise(function youngLady(resolve, reject) {
+          setTimeout(function() {
+            resolve('found a beach...');
+          },3000);
+        });
+      
+        
+      }).then(results => {
+
+        console.log(results);
+
+      }).catch(err => {
+        console.log('catch');
+        console.log(err);
+      });
+
+      console.log('young man waiting...');
+
+
+    </script>
+
+  </head>
+  <body>
+    <my-app>Loading...</my-app>
+  </body>
+</html>
