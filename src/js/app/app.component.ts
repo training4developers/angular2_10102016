@@ -1,126 +1,65 @@
-import { Component, Input, Injectable, OnInit, Directive,
-	Output, EventEmitter, Pipe, PipeTransform, forwardRef } from '@angular/core';
-import { FormControl, NG_VALIDATORS } from '@angular/forms';
+import { Component, Injectable, Inject, OpaqueToken } from '@angular/core';
 
-@Directive({
-	selector: '[minLen][ngModel]',
-	providers: [{
-		provide: NG_VALIDATORS,
-		useExisting: forwardRef(() => MinLenDirective),
-		multi: true
-	}]
-})
-export class MinLenDirective {
+export interface MyService {
+	doSomething: Function;
+}
 
-	private _minLen: number;
+const myServiceToken = new OpaqueToken('MyService');
 
-	@Input()
-	set minLen(value: any) {
-		const intValue = parseInt(value, 10);
-		this._minLen = intValue || 0;
-	}
-
-	validate(c: FormControl) {
-
-		console.log(this._minLen);
-
-		if (this._minLen > 0 && (c.value == null || String(c.value).length < this._minLen)) {
-			console.log('minLen invalid');
-			return { minlen: true };
-		}
-		console.log('minLen valid');
-		return null;
+@Injectable()
+export class Logger {
+	log(msg: string) {
+		console.log(msg);
 	}
 }
 
-@Directive({
-	selector: '[minlen][ngModel]',
-	providers: [{
-		provide: NG_VALIDATORS,
-		useExisting: forwardRef(() => MinLenValidatorDirective),
-		multi: true
-	}]
-})
-export class MinLenValidatorDirective {
+@Injectable()
+export class FirstMyService implements MyService {
 
-	private _minLen: number;
-
-	@Input('minlen')
-	set minLen(value: any) {
-		const intValue = parseInt(value, 10);
-		this._minLen = intValue || 0;
+	constructor(private logger: Logger) {
 	}
 
-
-	validate(c: FormControl): any {
-
-		console.log('validator was executed');
-
-		if (String(c.value).length < this._minLen) {
-			return {
-				minlen: true
-			};
-		}
-
-		return null;
+	doSomething() {
+		this.logger.log('first my svc did it!');
 	}
 
 }
 
 @Injectable()
-export class Colors {
+export class SecondMyService implements MyService {
 
-	private colors: string[] = ['red','blue','green','yellow'];
-	getAll() {
-		return this.colors;
+	doSomething() {
+		console.log('second my svc did it!');
 	}
 
-	insert(newColor: string) {
-		this.colors.push(newColor);
-	}
 }
 
-@Component({
-	selector: 'my-header',
-	template: `<header><h1>{{header}}</h1></header>`
-})
-export class MyHeaderComponent {
+// const svc = {
+// 	doSomething: () => console.log('did it too!')
+// };
 
-	@Input()
-	header: string;
+const useCustomLogger: boolean = true;
 
-}
+const configureMyService = (fn: Function) => {
+	return (logger: Logger): MyService => {
+		if (fn()) {
+			return new FirstMyService(logger);
+		} else {
+			return new SecondMyService();
+		}
+	};
+};
 
-@Component({
-	selector: 'my-list',
-	template: `<ul><li *ngFor="let item of items">{{item}}</li></ul>`
-})
-export class MyListComponent {
 
-	@Input()
-	items: string[];
-}
 
 @Component({
-	selector: 'my-form',
-	template: `<form novalidate>
-		<div>
-			<label for="color">New Color:</label>
-			<input type="text" id="color" name="color" [(ngModel)]="color" [minlen]="minLen">
-		</div>
-		<button type="button" (click)="addColor()">Add Color</button>
-</form>`
+	selector: 'child',
+	template: ``
 })
-export class MyFormComponent {
+export class ChildComponent {
 
-	color: string = '';
-	minLen: number = 3;
-
-	@Output()
-	newColor: EventEmitter<string> = new EventEmitter<string>();
-
-	addColor() {
-		this.newColor.emit(this.color);
+	constructor(@Inject(myServiceToken) private myService: MyService) {
+		this.myService.doSomething();
 	}
 
 }
@@ -128,27 +67,18 @@ export class MyFormComponent {
 
 @Component({
 	selector: 'my-app',
-	template: `<my-header [header]="header"></my-header>
-	<my-list [items]="colorList"></my-list>
-	<my-form (newColor)="newColorHandler($event)"></my-form>`,
-	providers: [ Colors ]
+	template: `<child></child>`,
+	providers: [ {
+		provide: myServiceToken,
+		useFactory: configureMyService(() => useCustomLogger),
+		deps: [ Logger ]
+	}]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-	header: string = "My Header";
-	colorList: string[] = [];
-
-	constructor(private colorsSvc: Colors) {
-		//this.colors = colorsSvc.getAll();
-	}
-
-	newColorHandler(newColor: string) {
-		this.colorsSvc.insert(newColor);
-		this.colorList = this.colorsSvc.getAll();
-	}
-
-	ngOnInit() {
-		this.colorList = this.colorsSvc.getAll();
+	constructor(@Inject(myServiceToken) private myService: MyService) {
+		this.myService.doSomething();
 	}
 
 }
+
