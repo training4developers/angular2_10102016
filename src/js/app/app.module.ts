@@ -5,13 +5,11 @@ import { HttpModule , JsonpModule } from '@angular/http';
 
 import '../../css/styles.scss';
 
-import { AppComponent } from './app.component';
+import { AppComponent, ListBoxComponent } from './app.component';
 
 @NgModule({
 	imports: [ BrowserModule, FormsModule, HttpModule, JsonpModule ],
-	declarations: [
-		AppComponent
-	],
+	declarations: [ AppComponent, ListBoxComponent ],
 	bootstrap: [ AppComponent ]
 })
 export class AppModule { }

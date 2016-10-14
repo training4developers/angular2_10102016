@@ -1,78 +1,38 @@
-// https://github.com/training4developers/ng2-widgets-app
+import { Component, Injectable, OnInit, EventEmitter, Input } from '@angular/core';
 
-import { Component, Injectable, OnInit, EventEmitter } from '@angular/core';
-import { Http, Response } from '@angular/http';
+@Component({
+	selector: 'list-box',
+	template: `<div>
+		<header><ng-content select=".header"></ng-content></header>
+		<ul>
+			<li *ngFor="let item of items">{{item}}</li>
+		</ul>
+	</div>`
+})
+export class ListBoxComponent {
 
-import { Observable, Observer } from 'rxjs';
+	header: string = 'list box header';
 
-@Injectable()
-export class Counter {
-
-	getCounter() : Observable<number> {
-
-			return Observable.create((observer: Observer<number>) => {
-
-				const ws = new WebSocket('ws://localhost:3020');
-
-				ws.addEventListener('open', function() {
-					console.log('web socket connection is opened');
-				});
-
-				ws.addEventListener('message', function(e) {
-					observer.next(e.data);
-				});
-
-			});
-
-	}
+	@Input()
+	items: any[];
 
 }
 
-@Injectable()
-export class Products {
 
-	private readonly baseUrl: string = 'http://svc.treeloop.com/products';
-
-	constructor(private http: Http) {}
-
-	getAll() {
-		return this.http.get(this.baseUrl).map(res => res.json());
-	}
-}
 
 @Component({
 	selector: 'my-app',
-	template: `<span>{{count | async}}</span>`,
-	providers: [ Products, Counter ]
+	template: `<list-box [items]="colors"><div class="header">{{header}}</div></list-box>
+	<button (click)="send()">Send</button>`
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-	productList: any[];
+	header: string = 'app comp header';
 
-	count: Observable<number>;
+	colors: string[] = ['red','blue','yellow','black'];
 
-	constructor(
-		private products: Products,
-		private counter: Counter
-	) {
-	}
-
-	ngOnInit() {
-
-		// fetch('http://svc.treeloop.com/products')
-		// 	.then(res => res.json())
-		// 	.then(results => console.dir(results));
-
-		// this.products.getAll().then((res: Response) => {
-		// 	this.productList = res.json();
-		// });
-
-		// this.products.getAll().subscribe(results => {
-		// 	console.dir(results);
-		// });
-
-		this.count = this.counter.getCounter();
+	send() {
+		console.log('test');
 	}
 
 }
-

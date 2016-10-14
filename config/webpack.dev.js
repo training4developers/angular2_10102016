@@ -6,12 +6,11 @@ const config = require('./bs-config');
 // merge the common configuration with the environment specific configuration
 module.exports = require('webpack-merge')(require('./webpack.common.js'), {
 
-  // use inline source maps
+  // use full source maps
   // this specific setting value is required to set breakpoints in the TypeScript
   // in the web browser for development
-  // other source map settings do not allow debugging
-  devtool: 'inline-source-map',
-  //devtool: 'source-map',
+  // other source map settings do not allow debugging in browser and vscode
+  devtool: 'source-map',
 
   // out file settings
   // path points to web server content folder where the web server will serve the files from
